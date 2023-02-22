@@ -6,10 +6,11 @@
       color="primary"
     >
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
-
-      <v-toolbar-title>QR Code</v-toolbar-title>
-
-      <v-spacer></v-spacer>
+      <div class="d-flex flex-row justify-content-center">
+      <span><v-icon icon="mdi-qrcode"></v-icon></span>
+      <v-toolbar-title>QR Scan</v-toolbar-title>
+      </div>
+      <!-- <v-spacer></v-spacer> -->
 
       <!-- <v-btn icon>
         <v-icon>mdi-dots-vertical</v-icon>
@@ -27,15 +28,6 @@
       :scrim="false"
       transition="dialog-bottom-transition"
     >
-      <!-- <template v-slot:activator="{ props }">
-        <v-btn
-          color="primary"
-          dark
-          v-bind="props"
-        >
-          Open Dialog
-        </v-btn>
-      </template> -->
       <v-card>
         <v-toolbar
           dark
@@ -48,16 +40,8 @@
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Settings</v-toolbar-title>
+          <v-toolbar-title>Installation Plan  {{ this.ip }}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn
-              variant="text"
-              @click="dialog = false"
-            >
-              Save
-            </v-btn>
-          </v-toolbar-items>
         </v-toolbar>
         <v-list
           lines="two"
@@ -112,66 +96,52 @@ export default {
             notifications: false,
             sound: true,
             widgets: false,
-            url: String,
+            ip: Number,
             ips: [{id:1, desc: 'ip 1 description'}, {id:1, desc: 'ip 1 description'}]
         };
     },
   mounted() {
-    // function onScanSuccess(decodedText, decodedResult) {
-    // // handle the scanned code as you like, for example:
-    //   console.log(`Code matched = ${decodedText}`, decodedResult);
-    // }
+    Html5Qrcode.getCameras().then(devices => {
+    /**
+     * devices would be an array of objects of type:
+     * { id: "id", label: "label" }
+     */
+    if (devices && devices.length) {
+      if (devices.length > 1) {
+        var cameraId = devices[1].id;
+      }
 
-    // function onScanFailure(error) {
-    //   // handle scan failure, usually better to ignore and keep scanning.
-    //   // for example:
-    //   console.warn(`Code scan error = ${error}`);
-    // }
-
-    // let html5QrcodeScanner = new Html5QrcodeScanner(
-    //   "reader",
-    //   { fps: 10, qrbox: {width: 250, height: 250} },
-    //   /* verbose= */ false);
-    // html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-    //   }
-    //
-  Html5Qrcode.getCameras().then(devices => {
-  /**
-   * devices would be an array of objects of type:
-   * { id: "id", label: "label" }
-   */
-  if (devices && devices.length) {
-    var cameraId = devices[0].id;
-    console.log(devices[0].id)
-    // .. use this to start scanning.
-    const html5QrCode = new Html5Qrcode(/* element id */ "reader");
-    html5QrCode.start(
-      cameraId, 
-      {
-        fps: 10,    // Optional, frame per seconds for qr code scanning
-        qrbox: { width: 320, height: 320 }  // Optional, if you want bounded box UI
-      },
-      (decodedText, decodedResult) => {
-        console.log(decodedText)
-        console.log(decodedResult)
-        this.url = decodedText
-        this.dialog = true
-        // html5QrCode.stop().then((ignore) => {
-        //   // QR Code scanning is stopped.
-        //   }).catch((err) => {
-        //     // Stop failed, handle it.
-        //   });
-      },
-      (errorMessage) => {
-        // parse error, ignore it.
-      })
-    .catch((err) => {
-      // Start failed, handle it.
+      var cameraId = devices[0].id;
+      console.log(devices[0].id)
+      // .. use this to start scanning.
+      const html5QrCode = new Html5Qrcode(/* element id */ "reader");
+      html5QrCode.start(
+        cameraId, 
+        {
+          fps: 10,    // Optional, frame per seconds for qr code scanning
+          qrbox: { width: 320, height: 320 }  // Optional, if you want bounded box UI
+        },
+        (decodedText, decodedResult) => {
+          console.log(decodedText)
+          console.log(decodedResult)
+          this.ip = 1
+          this.dialog = true
+          // html5QrCode.stop().then((ignore) => {
+          //   // QR Code scanning is stopped.
+          //   }).catch((err) => {
+          //     // Stop failed, handle it.
+          //   });
+        },
+        (errorMessage) => {
+          // parse error, ignore it.
+        })
+      .catch((err) => {
+        // Start failed, handle it.
+      });
+    }
+    }).catch(err => {
+      // handle err
     });
-  }
-  }).catch(err => {
-    // handle err
-  });
 
   }
 }
