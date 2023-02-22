@@ -1,8 +1,34 @@
 <template>
-  <!-- <router-view /> -->
-  <div id="reader" width="600px"></div>
-  {{ url }}
+  <v-app id="inspire">
+    <v-app-bar
+      app
+    >
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+      <v-toolbar-title>QR Code</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main>
+        <!-- <v-row>
+          <v-col
+            v-for="n in 24"
+            :key="n"
+            cols="4"
+          >
+            <v-card height="200"></v-card>
+          </v-col>
+        </v-row> -->
+        <div id="reader" class="ml-0"></div>
+    </v-main>
+  </v-app>
 </template>
+
 
 <script>
 // To use Html5QrcodeScanner (more info below)
@@ -52,7 +78,7 @@ export default {
       cameraId, 
       {
         fps: 10,    // Optional, frame per seconds for qr code scanning
-        qrbox: { width: 250, height: 250 }  // Optional, if you want bounded box UI
+        qrbox: { width: 320, height: 320 }  // Optional, if you want bounded box UI
       },
       (decodedText, decodedResult) => {
         console.log(decodedText)
