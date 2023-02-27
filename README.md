@@ -56,3 +56,8 @@ pnpm lint
 
 See [Configuration Reference](https://vitejs.dev/config/).
 # qrcode-scanner
+s
+### docker commands 
+```
+s
+```

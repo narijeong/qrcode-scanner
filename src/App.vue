@@ -3,23 +3,43 @@
   <v-app id="inspire">
     <v-app-bar
       app
-      color="primary"
     >
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
-      <div class="d-flex flex-row justify-content-center">
-      <span><v-icon icon="mdi-qrcode"></v-icon></span>
-      <v-toolbar-title>QR Scan</v-toolbar-title>
-      </div>
-      <!-- <v-spacer></v-spacer> -->
+      <v-icon icon="mdi-qrcode" class="pl-10"></v-icon>
+      <v-toolbar-title style="font-weight: 600;">QR Scan</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon>
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
 
-      <!-- <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn> -->
+        <v-btn icon>
+          <v-icon @click="openTest">mdi-heart</v-icon>
+        </v-btn>
+
+        <v-btn icon>
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
     </v-app-bar>
-
     <v-main>
-      <div id="reader"></div>
+      <div id="reader" class="pb-0"></div>
     </v-main>
+    <v-footer
+      app
+      class="bg-indigo-lighten-1 text-center d-flex flex-column"
+    >
+      <div class="pt-0 pb-2">
+        <v-btn
+        class="ma-2"
+        color="indigo"
+        icon="mdi-sync"
+        @click="swichCamera"
+        ></v-btn>      
+      </div>
+      <v-divider></v-divider>
+      <div>
+        {{ new Date().getFullYear() }} — <strong>Boeing</strong>
+      </div>
+    </v-footer>
   </v-app>
   <v-row justify="center">
   <v-dialog
@@ -40,37 +60,43 @@
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Installation Plan  {{ this.ip }}</v-toolbar-title>
+          <v-toolbar-title>IP-00RR48580Y</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-list
-          lines="two"
+          lines="three"
           subheader
         >
-          <v-list-subheader>User Controls</v-list-subheader>
-          <v-list-item title="Content filtering" subtitle="Set the content filtering level to restrict apps that can be downloaded"></v-list-item>
-          <v-list-item title="Password" subtitle="Require password for purchase or use password to restrict purchase"></v-list-item>
-        </v-list>
-        <v-divider></v-divider>
-        <v-list
-          lines="two"
-          subheader
-        >
-          <v-list-subheader>General</v-list-subheader>
-          <v-list-item title="Notifications" subtitle="Notify me about updates to apps or games that I downloaded">
+          <!-- <template v-slot:prepend>
+          <v-icon :icon="item.icon"></v-icon>
+        </template> -->
+        <!-- <v-list-item
+            title="TeamA, AC PRO, AC/DC"
+            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+          >
             <template v-slot:prepend>
-              <v-checkbox v-model="notifications"></v-checkbox>
+              <v-btn
+                class="ma-2"
+                color="indigo"
+                icon="mdi-cloud-upload"
+                >FD1
+                </v-btn>
             </template>
+          </v-list-item> -->
+          {{ decodedText }}
+          <v-list-item title="FD 1" subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.">
           </v-list-item>
-          <v-list-item title="Sound" subtitle="Auto-update apps at any time. Data charges may apply">
-            <template v-slot:prepend>
-              <v-checkbox v-model="sound"></v-checkbox>
-            </template>
+          <v-list-item title="FD 2" subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.">
           </v-list-item>
-          <v-list-item title="Auto-add widgets" subtitle="Automatically add home screen widgets">
-            <template v-slot:prepend>
-              <v-checkbox v-model="widgets"></v-checkbox>
-            </template>
+          <v-list-item title="FD 3" subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.">
+          </v-list-item>
+          <v-list-item title="FD 4" subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.">
+          </v-list-item>
+          <v-list-item title="FD 5" subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.">
+          </v-list-item>
+          <v-list-item title="FD 6" subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.">
+          </v-list-item>
+          <v-list-item title="FD 7" subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.">
           </v-list-item>
         </v-list>
       </v-card>
@@ -86,33 +112,39 @@ import {Html5QrcodeScanner} from "html5-qrcode"
 
 // To use Html5Qrcode (more info below)
 import {Html5Qrcode} from "html5-qrcode"
+import { stringify } from "postcss";
 
 export default {
   data() {
         return {
             // value: "https://example.com",
             // size: 300,
+            deviceIndex: 1,
             dialog: false,
-            notifications: false,
-            sound: true,
-            widgets: false,
-            ip: Number,
-            ips: [{id:1, desc: 'ip 1 description'}, {id:1, desc: 'ip 1 description'}]
+            decodedText: '',
         };
+  },
+  methods: {
+    openTest() {
+      this.dialog = 1
     },
+    swichCamera() {
+      this.deviceIndex = this.deviceIndex == 0 ? 1 : 0
+      console.log(this.deviceIndex)
+    }
+  },
   mounted() {
     Html5Qrcode.getCameras().then(devices => {
-    /**
-     * devices would be an array of objects of type:
-     * { id: "id", label: "label" }
-     */
+    var cameraId = ''
     if (devices && devices.length) {
       if (devices.length > 1) {
-        var cameraId = devices[1].id;
+        cameraId = devices[this.deviceIndex].id
       }
-
-      var cameraId = devices[0].id;
-      console.log(devices[0].id)
+      else {
+        cameraId = devices[0].id
+      }
+      console.log('second', cameraId)
+      // var cameraId = devices[0].id
       // .. use this to start scanning.
       const html5QrCode = new Html5Qrcode(/* element id */ "reader");
       html5QrCode.start(
@@ -124,7 +156,7 @@ export default {
         (decodedText, decodedResult) => {
           console.log(decodedText)
           console.log(decodedResult)
-          this.ip = 1
+          this.decodedText = decodedText
           this.dialog = true
           // html5QrCode.stop().then((ignore) => {
           //   // QR Code scanning is stopped.
@@ -142,8 +174,15 @@ export default {
     }).catch(err => {
       // handle err
     });
+    // const html5QrCode = new Html5Qrcode("reader");
+    // const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+        
+    // };
+    // const config = { fps: 10, qrbox: { width: 250, height: 250 } };
 
-  }
+    // // If you want to prefer back camera
+    // html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+    }
 }
 </script>
 
