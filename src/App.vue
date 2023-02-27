@@ -51,7 +51,7 @@
       <v-card>
         <v-toolbar
           dark
-          color="primary"
+          color="indigo-lighten-1"
         >
           <v-btn
             icon
